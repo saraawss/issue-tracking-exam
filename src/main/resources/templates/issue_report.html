@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" ng-app="myapp" ng-controller="myappcontroller">
+
+<head>
+
+    
+    <meta charset="UTF-8"/>
+    <title>Issue Tracking System</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+
+    <!-- MetisMenu CSS -->
+    <link href="./vendor/metisMenu/metisMenu.min.css" rel="stylesheet"></link>
+
+    <!-- Custom CSS -->
+    <link href="./dist/css/sb-admin-2.css" rel="stylesheet"></link>
+
+    <!-- Custom Fonts -->
+    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"></link>
+   
+</head>
+
+<body>
+
+   <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Issue Tracking System</a>
+            </div>
+            <!-- /.navbar-header -->
+	
+			<div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        
+                        <li>
+                            <a href="./createform"><i class="fa fa-dashboard fa-fw"></i> Create Issue</a>
+                        </li>
+                       
+                        <li>
+                            <a href="./issue_report"><i class="fa fa-table fa-fw"></i> Issue Report</a>
+                        </li>
+                   
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        
+        <!-- Page Content -->
+        <div id="page-wrapper">
+        
+        <div class="row">
+        	<div class="col-lg-12">
+        		<div class="panel panel-default">
+                	<div class="panel-heading">
+                    	Search Criteria
+                    </div>
+                    
+                    <div class="panel-body">
+                    	<div class="row">
+                        	<div class="col-lg-6">
+	                            <form id="mySearchForm" ng-submit="searchData()" >
+	                            
+	                            		<div class="form-group">
+                                            <label>Reporter</label>
+                                            <select class="form-control" ng-click="view_user()" ng-model="reporter" ng-options="opt.id as opt.username for opt in userData">
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Assignee</label>
+                                            <select class="form-control" ng-click="view_user()" ng-model="assignee" ng-options="opt.id as opt.username for opt in userData">
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>From Date</label>
+                                            <input type="date" class="form-control" ng-model="fromdate"></input>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>End Date</label>
+                                            <input type="date" class="form-control" ng-model="enddate"></input>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Search</button>
+	                            </form>
+	                        </div>
+	                    </div>
+	                </div>
+        		</div>
+        	</div>
+        </div>
+        
+        <div class="panel panel-default">
+              <div class="panel-heading">
+               	Task List
+              </div>  
+           
+              <div class="panel-body">
+                            <div class="table-responsive">
+                                                                
+                                <table class="table table-striped table-bordered" datatable="ng" dt-options="vm.dtOptions">
+								    <thead>
+								      <tr>
+                                            <th> Id </th>
+									        <th> Tilte </th>
+									        <th> Description </th>
+									        <th> Status </th>
+									        <th> Reporter </th>
+									        <th> Assignee </th>
+									        <th> Created </th>
+									        <th> Completed </th>
+									        <th> Edit </th>
+									        <th> Delete </th>
+									       
+                                        </tr>
+								    </thead>
+								    <tbody>
+								       <tr ng-repeat="y in reportData">
+								        <td id="issueid">&nbsp;{{y.id}}&nbsp;</td>
+								        <td>&nbsp;{{y.title}}&nbsp;</td>
+								        <td>&nbsp;{{y.description}}&nbsp;</td>
+								        <td>&nbsp;{{y.status}}&nbsp;</td>
+								        <td>&nbsp;{{y.reporterName}}&nbsp;</td>
+								        <td>&nbsp;{{y.assigneeName}}&nbsp;</td>
+								        <td>&nbsp;{{y.created  | date:'MM/dd/yyyy'}}&nbsp;</td>
+								        <td>&nbsp;{{y.completed  | date:'MM/dd/yyyy'}}&nbsp;</td>
+								        <td>&nbsp;<a href='./createform?id={{y.id}}'><button type="button" class="btn btn-primary btn-circle"><i class="fa fa-list"></i></button></a>&nbsp;</td>
+								        <td>&nbsp;<button type="button" class="btn btn-warning btn-circle" ng-click="delete_issue(y.id)"><i class="fa fa-times"></i></button>&nbsp;</td>
+								       </tr>
+								    </tbody>
+								  </table>
+                                
+                                
+                                
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>  
+                </div>
+        
+        
+        
+        </div>
+            
+           
+            
+        </div>
+        <!-- /#page-wrapper -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="./webjars/angularjs/1.4.9/angular.js"></script>
+	<script src="./webjars/angularjs/1.4.9/angular-resource.js"></script>
+	<script src="./webjars/angularjs/1.4.9/angular-route.js"></script>
+	<script src="./js/app.js"></script>
+    <script src="./js/controller.js"></script>
+    <!--  script src="./js/angular-datatables.min.js"></script-->
+    <script src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script src="./webjars/angular-datatables/0.4.0/angular-datatables.min.js"></script>
+   
+    
+    <!-- jQuery -->
+    <script src="./vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="./vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>
